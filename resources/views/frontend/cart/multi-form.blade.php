@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    @include('frontend.layout.css')
+ 
+    <style>
+        .cart-container {
+            margin-top: 40px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 60px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .cart-title {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .cart-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        .cart-table thead {
+            background-color: #f8f9fa;
+        }
+        
+        .cart-table th {
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #555;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .cart-table td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+        
+        .cart-table tbody tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .cart-total {
+            text-align: right;
+            font-size: 18px;
+            padding: 15px 0;
+            border-top: 2px solid #eee;
+            margin-top: 20px;
+        }
+        
+        .cart-total strong {
+            color: #e53935;
+        }
+        
+        .cart-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .btn-continue {
+            background-color: #f8f9fa;
+            color: #333;
+            border: 1px solid #ddd;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-continue:hover {
+            background-color: #e9ecef;
+        }
+        
+        .btn-checkout {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-checkout:hover {
+            background-color: #218838;
+        }
+        
+        .btn-checkout:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .product-name {
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .product-price, .product-subtotal {
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .product-quantity {
+            color: #666;
+        }
+        
+        @media (max-width: 768px) {
+            .cart-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .cart-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn-continue, .btn-checkout {
+                width: 100%;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+   
+
+    <!-- Navbar & Hero End -->
+
+    <!-- Modal Search Start -->
+    @include('frontend.layout.header')
+    <!-- Modal Search End -->
+    <main class="main">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">Checkout Produk</div>
+
+                        <div class="card-body">
+                            <h3>Detail Pembelian</h3>
+                            
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Produk</th>
+                                        <th>Harga</th>
+                                        <th>Jumlah</th>
+                                        <th>Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($cartItems as $item)
+                                    <tr>
+                                        <td>{{ $item->product->name }}</td>
+                                        <td>Rp{{ number_format($item->product->price, 0, ',', '.') }}</td>
+                                        <td>{{ $item->quantity }}</td>
+                                        <td>Rp{{ number_format($item->product->price * $item->quantity, 0, ',', '.') }}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="3">Total</th>
+                                        <th>Rp{{ number_format($total, 0, ',', '.') }}</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            
+                            <hr>
+                            
+                            <h3>Detail Pembeli</h3>
+                            <p><strong>Nama:</strong> {{ $user->name }}</p>
+                            <p><strong>Email:</strong> {{ $user->email }}</p>
+                            
+                            <form action="{{ route('checkout.multi-store') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <input type="hidden" name="cart_items" value="{{ json_encode($cartItems->pluck('id')->toArray()) }}">
+                                
+                                <div class="form-group">
+                                    <label for="proof_of_payment">Upload Bukti Pembayaran</label>
+                                    <input type="file" class="form-control-file" id="proof_of_payment" name="proof_of_payment" required>
+                                    <small class="form-text text-muted">Format: JPG, PNG (max 2MB)</small>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary">Kirim Pembayaran</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>     
+
+    <!-- Footer Start -->
+    @include('frontend.layout.footer')
+    @include('frontend.layout.js')
+</body>
+
+</html>
