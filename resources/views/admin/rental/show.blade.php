@@ -470,10 +470,10 @@
                         </div>
                         <div class="col-md-6 col-12">
                             <div class="signature-box">
-                                <p><strong>Hormat Kami</strong></p>
+                                <p><strong>Ketua Umum</strong></p>
                                 <img src="{{ asset('tanda_tangan/ketum.png') }}" alt="Tanda Tangan Penyewa" class="signature-img">
                                 <div class="signature-line"></div>
-                                <p class="signature-name">{{ auth()->user()->name }}</p>
+                                <p class="signature-name">Jonathan Naufal Farrel (Rangas)</p>
                             </div>
                         </div>
                     </div>

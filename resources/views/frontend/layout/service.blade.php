@@ -2,7 +2,7 @@
 <section id="services" class="services section">
 
     <div class="container section-title" data-aos="fade-up" style="text-align: center">
-      <p>SERVICE</p>
+      <p>DEVISI</p>
       <h2></h2>
     </div>
     <!-- Section Title -->
@@ -52,7 +52,7 @@
             </div>
 
 
-              <div class="details position-relative">
+              <div class="details position-relative " style="margin-top: -35px;">
                 <div class="icon">
                   <i class="{{ $service->icon }}"></i>
                 </div>

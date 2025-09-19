@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bukutamu;
+use App\Models\EvenCalender;
 use App\Models\Member;
 use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
@@ -84,6 +87,7 @@ class AdminController extends Controller
         $isAdminOrStaff = in_array($user->role, ['admin', 'karyawan']);
         $isMember = $user->role === 'member';
         $member = Member::all();
+        $events = EvenCalender::all();
         if ($isAdminOrStaff) {
             // ADMIN / KARYAWAN LIHAT SEMUA DATA
             $totalAmountDone = Transaction::where('status', 'done')->sum('amount');
@@ -112,37 +116,7 @@ class AdminController extends Controller
                     ];
                 });
             }
-            // } elseif ($isMember) {
-            //     // MEMBER LIHAT BERDASARKAN PRODUK MILIK SENDIRI
-            //     $productIds = Product::where('user_id', $user->id)->pluck('id');
-
-            //     $transactions = Transaction::whereHas('orderItems.product', function ($q) use ($user) {
-            //         $q->where('user_id', $user->id);
-            //     })->with('orderItems.product')->get();
-
-            //     $totalRevenueDone = 0;
-            //     $totalRevenuePending = 0;
-            //     $totalProductsSold = 0;
-
-            //     foreach ($transactions as $transaction) {
-            //         foreach ($transaction->orderItems as $item) {
-            //             if ($item->product->user_id == $user->id) {
-            //                 $total = $item->price * $item->qty;
-            //                 $totalProductsSold += $item->qty;
-
-            //                 if ($transaction->status == 'done') {
-            //                     $totalRevenueDone += $total;
-            //                 } elseif ($transaction->status == 'proses') {
-            //                     $totalRevenuePending += $total;
-            //                 }
-            //             }
-            //         }
-            //     }
-
-            //     $totalMyProducts = $productIds->count();
-            //     $adminRevenue = 0;
-            //     $usersWithIncome = [];
-            // }
+             
         } elseif ($isMember) {
             // MEMBER LIHAT BERDASARKAN PRODUK MILIK SENDIRI
             $productIds = Product::where('user_id', $user->id)->pluck('id');
@@ -185,10 +159,130 @@ class AdminController extends Controller
             'user',
             'usersWithIncome',
             'member',
-            'totalMembers'
+            'totalMembers',
+            'events',
         ));
     }
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'tgl_mulai' => 'required|date',
+            'tgl_akhir' => 'required|date|after_or_equal:tgl_mulai',
+            'waktu_mulai' => 'required|date_format:H:i',
+            'waktu_akhir' => 'required|date_format:H:i|after:waktu_mulai',
+            'deskripsi' => 'nullable|string',
+            'warna' => 'required|string|max:7'
+        ]);
 
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            $event = EvenCalender::create($request->all());
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Event berhasil disimpan',
+                'data' => $event
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Gagal menyimpan event: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+    public function update(Request $request, $id)
+    {
+        $event = EvenCalender::find($id);
+
+        if (!$event) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Event tidak ditemukan'
+            ], 404);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'tgl_mulai' => 'required|date',
+            'tgl_akhir' => 'required|date|after_or_equal:tgl_mulai',
+            'waktu_mulai' => 'required|date_format:H:i',
+            'waktu_akhir' => 'required|date_format:H:i|after:waktu_mulai',
+            'deskripsi' => 'nullable|string',
+            'warna' => 'required|string|max:7'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            $event->update($request->all());
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Event berhasil diupdate',
+                'data' => $event
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Gagal mengupdate event: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function destroy($id)
+    {
+        $event = EvenCalender::find($id);
+
+        if (!$event) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Event tidak ditemukan'
+            ], 404);
+        }
+
+        try {
+            $event->delete();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Event berhasil dihapus'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Gagal menghapus event: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function show($id)
+    {
+        $event = EvenCalender::find($id);
+
+        if (!$event) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Event tidak ditemukan'
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $event
+        ]);
+    }
     public function processWithdraw(Request $request, $userId)
     {
         if (auth()->user()->role !== 'admin') {
@@ -214,5 +308,9 @@ class AdminController extends Controller
             ->update(['status' => 'withdrawn']);
 
         return redirect()->route('admin.coba')->with('success', 'Withdraw berhasil dilakukan');
+    }
+    public function BukuTamu(){
+        $bukutamu = Bukutamu::all();
+        return view('');
     }
 }

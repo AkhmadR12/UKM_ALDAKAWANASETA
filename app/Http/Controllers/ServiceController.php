@@ -35,7 +35,7 @@ class ServiceController extends Controller
             'deskripsi' => 'required',
             'icon' => 'nullable|string|max:255',
             'image' => 'required|array|min:1|max:4', // Sesuaikan dengan name di form
-            'image.*' => 'image|mimes:jpg,jpeg,png,gif|max:2048',
+            'image.*' => 'image|mimes:jpg,jpeg,png,gif,heic|max:25048',
         ]);
 
         $imagePaths = [];
@@ -114,12 +114,12 @@ class ServiceController extends Controller
             'nama' => 'required|string|max:255',
             'deskripsi' => 'required',
             'icon' => 'nullable|string|max:255',
-            'image' => 'nullable|array|max:4',
-            'image.*' => 'image|mimes:jpg,jpeg,png,gif|max:2048',
+            'images' => 'nullable|array|max:4', // Ubah dari 'image' ke 'images'
+            'images.*' => 'image|mimes:jpg,jpeg,png,gif|max:25048',
             'remove_images' => 'nullable|array',
         ]);
 
-        $existingImages = $service->images ?? [];
+        $existingImages = $service->image ?? []; // Perbaiki dari 'images' ke 'image'
 
         // 1. Hapus gambar yang dicentang
         if (!empty($data['remove_images'])) {
@@ -131,12 +131,13 @@ class ServiceController extends Controller
                     }
                 }
             }
+            $existingImages = array_values($existingImages); // Reset index
         }
 
         // 2. Upload gambar baru
-        if ($request->hasFile('image')) {
+        if ($request->hasFile('images')) { // Ubah dari 'image' ke 'images'
             $uploadedImages = [];
-            foreach ($request->file('image') as $image) {
+            foreach ($request->file('images') as $image) { // Ubah dari 'image' ke 'images'
                 $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
                 $image->move(public_path('services'), $imageName);
                 $uploadedImages[] = 'services/' . $imageName;
@@ -145,13 +146,19 @@ class ServiceController extends Controller
             // Gabungkan yang lama + baru (max 4 total)
             $combinedImages = array_merge($existingImages, $uploadedImages);
             if (count($combinedImages) > 4) {
-                return redirect()->back()->withErrors(['image' => 'Total gambar tidak boleh lebih dari 4.']);
+                // Hapus gambar yang baru diupload jika melebihi batas
+                foreach ($uploadedImages as $uploadedImage) {
+                    if (file_exists(public_path($uploadedImage))) {
+                        unlink(public_path($uploadedImage));
+                    }
+                }
+                return redirect()->back()->withErrors(['images' => 'Total gambar tidak boleh lebih dari 4.']);
             }
 
-            $data['image'] = array_values($combinedImages); // reset index
+            $data['image'] = $combinedImages;
         } else {
             // Kalau tidak upload baru, simpan hasil penghapusan lama
-            $data['image'] = array_values($existingImages);
+            $data['image'] = $existingImages;
         }
 
         $service->update($data);

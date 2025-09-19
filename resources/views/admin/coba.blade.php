@@ -7,6 +7,10 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Include jQuery for AJAX -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Include CSRF token for Laravel -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
       
     <style>
         /* CSS akan ditempatkan di sini */
@@ -907,6 +911,27 @@
             margin-top: 5px;
             display: none;
         }
+
+        /* Alert Messages */
+        .alert {
+            padding: 12px 16px;
+            margin: 10px 0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background: #d1f7c4;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f5c6cb;
+            color: #721c24;
+            border: 1px solid #f1b0b7;
+        }
     </style>
 </head>
 
@@ -958,48 +983,6 @@
                             <div class="wave"></div>
                         </div>
 
-                        <!-- Card Pendapatan Member (70%) -->
-                        {{-- <div class="card-3d pendapatan-selesai">
-                            <div class="card-icon">
-                                <i class="fas fa-check-circle"></i>
-                            </div>
-                            <h3 class="card-title">Pendapatan Member</h3>
-                            <h2 class="card-value">Rp {{ number_format($totalRevenueDone, 0, ',', '.') }}</h2>
-                            <div class="wave"></div>
-                        </div>
-
-                        <!-- Card Pendapatan Admin (30%) - Hanya tampil untuk admin -->
-                        @if($isAdminOrStaff)
-                            <div class="card-3d pendapatan-admin">
-                                <div class="card-icon">
-                                    <i class="fas fa-dollar-sign"></i>
-                                </div>
-                                <h3 class="card-title">Pendapatan Admin</h3>
-                                <h2 class="card-value">Rp {{ number_format($adminRevenue, 0, ',', '.') }}</h2>
-                                <div class="wave"></div>
-                            </div>
-                        @endif
-
-                        <!-- Card Pendapatan Pending -->
-                        <div class="card-3d pendapatan-pending">
-                            <div class="card-icon">
-                                <i class="fas fa-clock"></i>
-                            </div>
-                            <h3 class="card-title">Pendapatan Pending</h3>
-                            <h2 class="card-value">Rp {{ number_format($totalRevenuePending, 0, ',', '.') }}</h2>
-                            <div class="wave"></div>
-                        </div>
-
-                        <!-- Card Produk Terjual -->
-                        <div class="card-3d produk-terjual">
-                            <div class="card-icon">
-                                <i class="fas fa-shopping-cart"></i>
-                            </div>
-                            <h3 class="card-title">Produk Terjual</h3>
-                            <h2 class="card-value">{{ $totalProductsSold }}</h2>
-                            <div class="wave"></div>
-                        </div> --}}
-
                         {{-- Role Info Section --}}
                         <div class="mt-8">
                             @if ($isAdminOrStaff)
@@ -1017,6 +1000,10 @@
                             @endif
                         </div>
                     </div>
+
+                    <!-- Alert Messages -->
+                    <div id="alertContainer"></div>
+
                     <div class="card">
                         <header class="calendar-header">
                             <div class="header-controls">
@@ -1105,18 +1092,18 @@
                             <form id="eventForm">
                                 <div class="form-group">
                                     <label for="eventTitle">Event Title</label>
-                                    <input type="text" id="eventTitle" required>
+                                    <input type="text" id="eventTitle" name="name" required>
                                 </div>
                                 
                                 <!-- Mengubah input tanggal tunggal menjadi range tanggal -->
                                 <div class="form-row">
                                     <div class="form-group">
                                         <label for="eventStartDate">Start Date</label>
-                                        <input type="date" id="eventStartDate" required>
+                                        <input type="date" id="eventStartDate" name="tgl_mulai" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="eventEndDate">End Date</label>
-                                        <input type="date" id="eventEndDate" required>
+                                        <input type="date" id="eventEndDate" name="tgl_akhir" required>
                                         <div class="date-error" id="endDateError">End date cannot be before start date</div>
                                     </div>
                                 </div>
@@ -1124,43 +1111,44 @@
                                 <div class="form-row">
                                     <div class="form-group">
                                         <label for="eventStart">Start Time</label>
-                                        <input type="time" id="eventStart" required>
+                                        <input type="time" id="eventStart" name="waktu_mulai" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="eventEnd">End Time</label>
-                                        <input type="time" id="eventEnd" required>
+                                        <input type="time" id="eventEnd" name="waktu_akhir" required>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="eventDescription">Description</label>
-                                    <textarea id="eventDescription" rows="3"></textarea>
+                                    <textarea id="eventDescription" name="deskripsi" rows="3"></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label for="eventColor">Color</label>
                                     <div class="color-picker">
-                                        <input type="radio" name="eventColor" value="#667eea" id="color1" checked>
+                                        <input type="radio" name="warna" value="#667eea" id="color1" checked>
                                         <label for="color1" class="color-option" style="background: #667eea;"></label>
                                         
-                                        <input type="radio" name="eventColor" value="#10b981" id="color2">
+                                        <input type="radio" name="warna" value="#10b981" id="color2">
                                         <label for="color2" class="color-option" style="background: #10b981;"></label>
                                         
-                                        <input type="radio" name="eventColor" value="#f59e0b" id="color3">
+                                        <input type="radio" name="warna" value="#f59e0b" id="color3">
                                         <label for="color3" class="color-option" style="background: #f59e0b;"></label>
                                         
-                                        <input type="radio" name="eventColor" value="#ef4444" id="color4">
+                                        <input type="radio" name="warna" value="#ef4444" id="color4">
                                         <label for="color4" class="color-option" style="background: #ef4444;"></label>
                                         
-                                        <input type="radio" name="eventColor" value="#8b5cf6" id="color5">
+                                        <input type="radio" name="warna" value="#8b5cf6" id="color5">
                                         <label for="color5" class="color-option" style="background: #8b5cf6;"></label>
                                     </div>
                                 </div>
                                 <div class="form-actions">
                                     <button type="button" class="btn btn-secondary" id="deleteEvent" style="display: none;">Delete</button>
-                                    <button type="submit" class="btn btn-primary">Save Event</button>
+                                    <button type="submit" class="btn btn-primary" id="saveEventBtn">Save Event</button>
                                 </div>
                             </form>
-                </div>
+                        </div>
 
+                    </div>
                 </div>
             </div>
             @include('admin.footer')
@@ -1170,7 +1158,14 @@
     @include('admin.js')
      
     <script>
-         // Data untuk chart (contoh data)
+        // Setup CSRF token for all AJAX requests
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        // Data untuk chart (contoh data)
         const allMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'];
         // Data statistik (contoh)
         const chartData = {
@@ -1211,6 +1206,24 @@
             ]
         };
 
+        // Function to show alert messages
+        function showAlert(message, type = 'success') {
+            const alertContainer = document.getElementById('alertContainer');
+            const alertClass = type === 'success' ? 'alert-success' : 'alert-error';
+            
+            const alertHTML = `
+                <div class="alert ${alertClass}">
+                    ${message}
+                </div>
+            `;
+            
+            alertContainer.innerHTML = alertHTML;
+            
+            // Auto hide after 5 seconds
+            setTimeout(() => {
+                alertContainer.innerHTML = '';
+            }, 5000);
+        }
 
         // Efek 3D untuk card
         document.querySelectorAll('.card-3d').forEach(card => {
@@ -1229,36 +1242,20 @@
                 card.style.transform = 'translateY(0) rotateY(0) rotateX(0)';
             });
         });
-        // Tambahkan efek 3D yang lebih interaktif dengan JavaScript
-        document.querySelectorAll('.card-3d').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
-                const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
-                card.style.transform = `translateY(-10px) rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-            });
 
-            card.addEventListener('mouseenter', () => {
-                card.style.transition = 'all 0.1s ease';
-            });
-
-            card.addEventListener('mouseleave', () => {
-                card.style.transition = 'all 0.5s ease';
-                card.style.transform = 'translateY(0) rotateY(0) rotateX(0)';
-            });
-        });
         // Interactive Calendar Widget
-         class InteractiveCalendar {
+        class InteractiveCalendar {
             constructor() {
                 this.currentDate = new Date();
                 this.selectedDate = new Date();
                 this.currentView = 'month';
-                this.events = this.loadEvents();
+                this.events = [];
                 this.draggedEvent = null;
                 
                 this.initializeElements();
                 this.bindEvents();
                 this.renderCalendar();
-                this.renderEvents();
+                this.loadEventsFromServer();
             }
 
             initializeElements() {
@@ -1287,6 +1284,7 @@
                 this.eventForm = document.getElementById('eventForm');
                 this.modalTitle = document.getElementById('modalTitle');
                 this.deleteEventBtn = document.getElementById('deleteEvent');
+                this.saveEventBtn = document.getElementById('saveEventBtn');
                 
                 // Form elements
                 this.eventTitle = document.getElementById('eventTitle');
@@ -1335,6 +1333,25 @@
                         this.closeEventModal();
                     }
                 });
+            }
+
+            // Load events from server
+            loadEventsFromServer() {
+                // Convert PHP events to JavaScript format
+                const serverEvents = @json($events ?? []);
+                
+                this.events = serverEvents.map(event => ({
+                    id: event.id,
+                    title: event.name,
+                    startDate: event.tgl_mulai,
+                    endDate: event.tgl_akhir,
+                    startTime: event.waktu_mulai,
+                    endTime: event.waktu_akhir,
+                    description: event.deskripsi || '',
+                    color: event.warna
+                }));
+                
+                this.renderEvents();
             }
 
             validateDates() {
@@ -1491,78 +1508,7 @@
                 }
             }
 
-            // renderEvents() {
-            //     // Clear existing events
-            //     this.clearEventDisplay();
-                
-            //     // Render events based on current view
-            //     switch (this.currentView) {
-            //         case 'month':
-            //             this.renderMonthEvents();
-            //             break;
-            //         case 'week':
-            //             this.renderWeekEvents();
-            //             break;
-            //         case 'day':
-            //             this.renderDayEvents();
-            //             break;
-            //     }
-                
-            //     // Render events list
-            //     this.renderEventsList();
-            // }
-
-            // renderMonthEvents() {
-            //     const dayElements = this.monthGrid.querySelectorAll('.calendar-day');
-                
-            //     dayElements.forEach(dayEl => {
-            //         const date = dayEl.dataset.date;
-            //         const dayEvents = this.getEventsForDate(date);
-            //         const eventsContainer = dayEl.querySelector('.day-events');
-                    
-            //         dayEvents.forEach(event => {
-            //             const eventDot = document.createElement('div');
-            //             eventDot.className = 'event-dot';
-            //             eventDot.style.background = event.color;
-            //             eventDot.textContent = event.title;
-            //             eventDot.title = `${event.title} - ${event.startTime}`;
-                        
-            //             eventDot.addEventListener('click', (e) => {
-            //                 e.stopPropagation();
-            //                 this.openEventModal(event);
-            //             });
-                        
-            //             eventsContainer.appendChild(eventDot);
-            //         });
-            //     });
-            // }
-
-            // renderWeekEvents() {
-            //     const startOfWeek = this.getStartOfWeek(this.selectedDate);
-                
-            //     for (let i = 0; i < 7; i++) {
-            //         const date = new Date(startOfWeek);
-            //         date.setDate(startOfWeek.getDate() + i);
-            //         const dateStr = date.toISOString().split('T')[0];
-            //         const dayEvents = this.getEventsForDate(dateStr);
-                    
-            //         dayEvents.forEach(event => {
-            //             const eventElement = this.createWeekEventElement(event, i);
-            //             this.weekGrid.appendChild(eventElement);
-            //         });
-            //     }
-            // }
-
-            // renderDayEvents() {
-            //     const dateStr = this.selectedDate.toISOString().split('T')[0];
-            //     const dayEvents = this.getEventsForDate(dateStr);
-                
-            //     dayEvents.forEach(event => {
-            //         const eventElement = this.createDayEventElement(event);
-            //         this.dayTimeline.appendChild(eventElement);
-            //     });
-            // }
-             renderEvents() {
+            renderEvents() {
                 // Clear existing events
                 this.clearEventDisplay();
                 
@@ -1636,6 +1582,7 @@
                     this.dayTimeline.appendChild(eventElement);
                 });
             }
+
             createWeekEventElement(event, dayIndex) {
                 const eventDiv = document.createElement('div');
                 eventDiv.className = 'week-event';
@@ -1667,82 +1614,11 @@
             renderEventsList() {
                 this.eventsList.innerHTML = '';
                 
-                const sortedEvents = this.events.sort((a, b) => new Date(a.date) - new Date(b.date));
+                const sortedEvents = this.events.sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
                 
                 sortedEvents.forEach(event => {
                     const eventItem = this.createEventListItem(event);
                     this.eventsList.appendChild(eventItem);
-                });
-            }
-
-            // createEventListItem(event) {
-            //     const eventDiv = document.createElement('div');
-            //     eventDiv.className = 'event-item';
-                
-            //     const colorDot = document.createElement('div');
-            //     colorDot.className = 'event-color';
-            //     colorDot.style.background = event.color;
-                
-            //     const eventInfo = document.createElement('div');
-            //     eventInfo.className = 'event-info';
-                
-            //     const eventTitle = document.createElement('div');
-            //     eventTitle.className = 'event-title';
-            //     eventTitle.textContent = event.title;
-                
-            //     const eventTime = document.createElement('div');
-            //     eventTime.className = 'event-time';
-            //     eventTime.textContent = `${this.formatDate(event.date)} - ${event.startTime}`;
-                
-            //     eventInfo.appendChild(eventTitle);
-            //     eventInfo.appendChild(eventTime);
-                
-            //     const eventActions = document.createElement('div');
-            //     eventActions.className = 'event-actions';
-                
-            //     const editBtn = document.createElement('button');
-            //     editBtn.className = 'edit-btn';
-            //     editBtn.innerHTML = '<i class="fas fa-edit"></i>';
-            //     editBtn.addEventListener('click', () => this.openEventModal(event));
-                
-            //     const deleteBtn = document.createElement('button');
-            //     deleteBtn.className = 'delete-btn';
-            //     deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
-            //     deleteBtn.addEventListener('click', () => this.deleteEventById(event.id));
-                
-            //     eventActions.appendChild(editBtn);
-            //     eventActions.appendChild(deleteBtn);
-                
-            //     eventDiv.appendChild(colorDot);
-            //     eventDiv.appendChild(eventInfo);
-            //     eventDiv.appendChild(eventActions);
-                
-            //     return eventDiv;
-            // }
-             renderWeekEvents() {
-                const startOfWeek = this.getStartOfWeek(this.selectedDate);
-                
-                for (let i = 0; i < 7; i++) {
-                    const date = new Date(startOfWeek);
-                    date.setDate(startOfWeek.getDate() + i);
-                    const dateStr = date.toISOString().split('T')[0];
-                    const dayEvents = this.getEventsForDate(dateStr);
-                    
-                    dayEvents.forEach(event => {
-                        const eventElement = this.createWeekEventElement(event, i);
-                        this.weekGrid.appendChild(eventElement);
-                    });
-                }
-            }
-
-            // Method untuk menampilkan event di day view
-            renderDayEvents() {
-                const dateStr = this.selectedDate.toISOString().split('T')[0];
-                const dayEvents = this.getEventsForDate(dateStr);
-                
-                dayEvents.forEach(event => {
-                    const eventElement = this.createDayEventElement(event);
-                    this.dayTimeline.appendChild(eventElement);
                 });
             }
 
@@ -1766,13 +1642,13 @@
                 eventTime.className = 'event-time';
                 
                 // Tampilkan rentang tanggal jika berbeda
-                const startDate = new Date(event.startDate || event.date);
-                const endDate = new Date(event.endDate || event.date);
+                const startDate = new Date(event.startDate);
+                const endDate = new Date(event.endDate);
                 
                 if (startDate.getTime() === endDate.getTime()) {
-                    eventTime.textContent = `${this.formatDate(event.startDate || event.date)} - ${event.startTime}`;
+                    eventTime.textContent = `${this.formatDate(event.startDate)} - ${event.startTime}`;
                 } else {
-                    eventTime.textContent = `${this.formatDate(event.startDate || event.date)} - ${this.formatDate(event.endDate || event.date)}`;
+                    eventTime.textContent = `${this.formatDate(event.startDate)} - ${this.formatDate(event.endDate)}`;
                 }
                 
                 eventInfo.appendChild(eventTitle);
@@ -1801,26 +1677,24 @@
                 return eventDiv;
             }
 
-            // ... (metode lainnya tetap sama) ...
-        
-
-             openEventModal(event = null) {
+            openEventModal(event = null) {
                 this.editingEventId = event ? event.id : null;
                 
                 if (event) {
                     this.modalTitle.textContent = 'Edit Event';
                     this.eventTitle.value = event.title;
-                    this.eventStartDate.value = event.startDate || event.date; // Kompatibilitas dengan data lama
-                    this.eventEndDate.value = event.endDate || event.date;     // Kompatibilitas dengan data lama
+                    this.eventStartDate.value = event.startDate;
+                    this.eventEndDate.value = event.endDate;
                     this.eventStart.value = event.startTime;
                     this.eventEnd.value = event.endTime;
                     this.eventDescription.value = event.description || '';
                     
                     // Set color
-                    const colorRadio = document.querySelector(`input[name="eventColor"][value="${event.color}"]`);
+                    const colorRadio = document.querySelector(`input[name="warna"][value="${event.color}"]`);
                     if (colorRadio) colorRadio.checked = true;
                     
                     this.deleteEventBtn.style.display = 'block';
+                    this.saveEventBtn.textContent = 'Update Event';
                 } else {
                     this.modalTitle.textContent = 'Add New Event';
                     this.eventForm.reset();
@@ -1831,6 +1705,7 @@
                     this.eventEndDate.value = today;
                     
                     this.deleteEventBtn.style.display = 'none';
+                    this.saveEventBtn.textContent = 'Save Event';
                 }
                 
                 this.eventModal.classList.add('active');
@@ -1843,83 +1718,118 @@
                 if (!this.validateDates()) {
                     return;
                 }
+
+                // Disable form while processing
+                this.saveEventBtn.disabled = true;
+                this.saveEventBtn.textContent = 'Saving...';
                 
-                const eventData = {
-                    title: this.eventTitle.value,
-                    startDate: this.eventStartDate.value,
-                    endDate: this.eventEndDate.value,
-                    startTime: this.eventStart.value,
-                    endTime: this.eventEnd.value,
-                    description: this.eventDescription.value,
-                    color: document.querySelector('input[name="eventColor"]:checked').value
-                };
+                const formData = new FormData(this.eventForm);
                 
                 if (this.editingEventId) {
-                    this.updateEvent(this.editingEventId, eventData);
+                    this.updateEventOnServer(this.editingEventId, formData);
                 } else {
-                    this.addEvent(eventData);
+                    this.addEventToServer(formData);
                 }
+            }
+
+            addEventToServer(formData) {
+                $.ajax({
+                    url: '{{ route("events.store") }}',
+                    method: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: (response) => {
+                        if (response.status === 'success') {
+                            showAlert('Event berhasil disimpan!', 'success');
+                            this.closeEventModal();
+                            this.loadEventsFromServer();
+                        } else {
+                            showAlert('Gagal menyimpan event', 'error');
+                        }
+                    },
+                    error: (xhr) => {
+                        let errorMessage = 'Gagal menyimpan event';
+                        if (xhr.responseJSON && xhr.responseJSON.errors) {
+                            const errors = Object.values(xhr.responseJSON.errors).flat();
+                            errorMessage = errors.join(', ');
+                        }
+                        showAlert(errorMessage, 'error');
+                    },
+                    complete: () => {
+                        this.saveEventBtn.disabled = false;
+                        this.saveEventBtn.textContent = this.editingEventId ? 'Update Event' : 'Save Event';
+                    }
+                });
+            }
+
+            updateEventOnServer(eventId, formData) {
+                // Add PUT method override
+                formData.append('_method', 'PUT');
                 
-                this.closeEventModal();
+                $.ajax({
+                    url: `{{ url('/dashboard/events') }}/${eventId}`,
+                    method: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: (response) => {
+                        if (response.status === 'success') {
+                            showAlert('Event berhasil diupdate!', 'success');
+                            this.closeEventModal();
+                            this.loadEventsFromServer();
+                        } else {
+                            showAlert('Gagal mengupdate event', 'error');
+                        }
+                    },
+                    error: (xhr) => {
+                        let errorMessage = 'Gagal mengupdate event';
+                        if (xhr.responseJSON && xhr.responseJSON.errors) {
+                            const errors = Object.values(xhr.responseJSON.errors).flat();
+                            errorMessage = errors.join(', ');
+                        }
+                        showAlert(errorMessage, 'error');
+                    },
+                    complete: () => {
+                        this.saveEventBtn.disabled = false;
+                        this.saveEventBtn.textContent = 'Update Event';
+                    }
+                });
             }
 
             closeEventModal() {
                 this.eventModal.classList.remove('active');
                 this.editingEventId = null;
-            }
-
-            // handleEventSubmit(e) {
-            //     e.preventDefault();
-                
-            //     const eventData = {
-            //         title: this.eventTitle.value,
-            //         date: this.eventDate.value,
-            //         startTime: this.eventStart.value,
-            //         endTime: this.eventEnd.value,
-            //         description: this.eventDescription.value,
-            //         color: document.querySelector('input[name="eventColor"]:checked').value
-            //     };
-                
-            //     if (this.editingEventId) {
-            //         this.updateEvent(this.editingEventId, eventData);
-            //     } else {
-            //         this.addEvent(eventData);
-            //     }
-                
-            //     this.closeEventModal();
-            // }
-
-            addEvent(eventData) {
-                const newEvent = {
-                    id: Date.now().toString(),
-                    ...eventData
-                };
-                
-                this.events.push(newEvent);
-                this.saveEvents();
-                this.renderEvents();
-            }
-
-            updateEvent(eventId, eventData) {
-                const eventIndex = this.events.findIndex(e => e.id === eventId);
-                if (eventIndex !== -1) {
-                    this.events[eventIndex] = { ...this.events[eventIndex], ...eventData };
-                    this.saveEvents();
-                    this.renderEvents();
-                }
+                this.saveEventBtn.disabled = false;
             }
 
             deleteEvent() {
-                if (this.editingEventId) {
+                if (this.editingEventId && confirm('Apakah Anda yakin ingin menghapus event ini?')) {
                     this.deleteEventById(this.editingEventId);
                     this.closeEventModal();
                 }
             }
 
             deleteEventById(eventId) {
-                this.events = this.events.filter(e => e.id !== eventId);
-                this.saveEvents();
-                this.renderEvents();
+                if (!confirm('Apakah Anda yakin ingin menghapus event ini?')) {
+                    return;
+                }
+
+                $.ajax({
+                    url: `{{ url('/dashboard/events') }}/${eventId}`,
+                    method: 'DELETE',
+                    success: (response) => {
+                        if (response.status === 'success') {
+                            showAlert('Event berhasil dihapus!', 'success');
+                            this.loadEventsFromServer();
+                        } else {
+                            showAlert('Gagal menghapus event', 'error');
+                        }
+                    },
+                    error: (xhr) => {
+                        showAlert('Gagal menghapus event', 'error');
+                    }
+                });
             }
 
             selectDate(date) {
@@ -1944,17 +1854,15 @@
                 start.setDate(start.getDate() - day);
                 return start;
             }
+
             getEventsForDate(date) {
                 const targetDate = new Date(date);
                 return this.events.filter(event => {
-                    const startDate = new Date(event.startDate || event.date); // Kompatibilitas dengan data lama
-                    const endDate = new Date(event.endDate || event.date);     // Kompatibilitas dengan data lama
+                    const startDate = new Date(event.startDate);
+                    const endDate = new Date(event.endDate);
                     return targetDate >= startDate && targetDate <= endDate;
                 });
             }
-            // getEventsForDate(date) {
-            //     return this.events.filter(event => event.date === date);
-            // }
 
             formatHour(hour) {
                 return hour < 12 ? `${hour} AM` : hour === 12 ? '12 PM' : `${hour - 12} PM`;
@@ -1987,16 +1895,6 @@
                 const dayViewEvents = this.dayTimeline.querySelectorAll('.day-event');
                 dayViewEvents.forEach(event => event.remove());
             }
-
-            // Local storage methods
-            saveEvents() {
-                localStorage.setItem('calendarEvents', JSON.stringify(this.events));
-            }
-
-            loadEvents() {
-                const saved = localStorage.getItem('calendarEvents');
-                return saved ? JSON.parse(saved) : [];
-            }
         }
 
         // Initialize calendar when DOM is loaded
@@ -2006,7 +1904,6 @@
             // Make calendar globally accessible for debugging
             window.calendar = calendar;
         });
-     
     </script>
 </body>
 

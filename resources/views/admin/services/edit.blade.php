@@ -96,46 +96,56 @@
                                         </div>
                                     @endif --}}
                                     {{-- body form --}}
-                                        <form action="{{ route('service.update', $service->id) }}" method="POST" enctype="multipart/form-data">
-                                            @csrf
-                                            @method('PUT')
-                                            <div class="mb-3">
-                                                <label>Nama</label>
-                                                <input type="text" name="nama" class="form-control" value="{{ old('nama', $service->nama ?? '') }}" required>
-                                            </div>
+                                    <form action="{{ route('service.update', $service->id) }}" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="mb-3">
+                                            <label>Nama</label>
+                                            <input type="text" name="nama" class="form-control" value="{{ old('nama', $service->nama ?? '') }}" required>
+                                        </div>
 
-                                            <div class="mb-3">
-                                                <label>Deskripsi</label>
-                                                <textarea name="deskripsi" class="form-control" required>{{ old('deskripsi', $service->deskripsi ?? '') }}</textarea>
-                                            </div>
+                                        <div class="mb-3">
+                                            <label>Deskripsi</label>
+                                            <textarea name="deskripsi" class="form-control" required>{{ old('deskripsi', $service->deskripsi ?? '') }}</textarea>
+                                        </div>
 
-                                            <div class="mb-3">
-                                                <label>Icon (Font Awesome class, contoh: fas fa-star)</label>
-                                                <input type="text" name="icon" class="form-control" value="{{ old('icon', $service->icon ?? '') }}">
-                                            </div>
+                                        <div class="mb-3">
+                                            <label>Icon (Font Awesome class, contoh: fas fa-star)</label>
+                                            <input type="text" name="icon" class="form-control" value="{{ old('icon', $service->icon ?? '') }}">
+                                        </div>
 
-                                            <div class="mb-3">
-                                                <label>Upload Gambar (Maks 4)</label>
-                                                <div id="image-upload-area">
-                                                    <input type="file" name="image[]" class="form-control mb-2" required>
-                                                </div>
-                                                <button type="button" class="btn btn-sm btn-secondary" onclick="addImageInput()">+ Tambah Gambar</button>
-                                                <small class="text-muted d-block">Upload minimal 1 gambar, maksimal 4</small>
+                                        <div class="mb-3">
+                                            <label>Upload Gambar Baru (Maks 4)</label>
+                                            <div id="image-upload-area">
+                                                <input type="file" name="images[]" class="form-control mb-2">
                                             </div>
-                                            {{-- Gambar lama --}}
-                                                @if (is_array($service->image) && count($service->image))
-                                                    <div class="mt-2">
-                                                        @foreach ($service->image as $img)
-                                                            <div class="d-inline-block me-2 text-center">
-                                                                <img src="{{ asset($img) }}" width="100" class="img-thumbnail mb-1">
-                                                                <br>
-                                                                <input type="checkbox" name="remove_images[]" value="{{ $img }}"> Hapus
+                                            <button type="button" class="btn btn-sm btn-secondary" onclick="addImageInput()">+ Tambah Gambar</button>
+                                            <small class="text-muted d-block">Upload maksimal 4 gambar</small>
+                                        </div>
+
+                                        {{-- Gambar lama --}}
+                                        @if (is_array($service->image) && count($service->image))
+                                            <div class="mt-4">
+                                                <label>Gambar Saat Ini:</label>
+                                                <div class="row">
+                                                    @foreach ($service->image as $img)
+                                                        <div class="col-md-3 mb-3">
+                                                            <div class="card">
+                                                                <img src="{{ asset($img) }}" class="card-img-top" style="height: 150px; object-fit: cover;">
+                                                                <div class="card-body text-center">
+                                                                    <input type="checkbox" name="remove_images[]" value="{{ $img }}"> 
+                                                                    <span class="ms-1">Hapus</span>
+                                                                </div>
                                                             </div>
-                                                        @endforeach
-                                                    </div>
-                                                @endif
-                                            <button type="submit" class="btn btn-primary">Simpan</button>
-                                        </form>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        @endif
+
+                                        <button type="submit" class="btn btn-primary">Simpan</button>
+                                        <a href="{{ route('service.index') }}" class="btn btn-danger">Kembali</a>
+                                    </form>
                                 </div>
                                     
                             </div>
@@ -159,7 +169,7 @@
             }
             const input = document.createElement('input');
             input.type = 'file';
-            input.name = 'images[]';
+            input.name = 'images[]'; // Pastikan ini 'images[]'
             input.classList.add('form-control', 'mb-2');
             container.appendChild(input);
         }

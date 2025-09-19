@@ -248,6 +248,10 @@ Route::middleware(['auth', 'admin.or.memberopen'])->group(function () {
     // Route::get('/admin', [AdminController::class, 'dashboard']);
     // Route::get('/admin', [AdminController::class, 'admin'])->name('admin');
     Route::get('/dashboard', [AdminController::class, 'coba'])->name('coba');
+    Route::post('/dashboard/events', [AdminController::class, 'store'])->name('events.store');
+    Route::put('/dashboard/events/{id}', [AdminController::class, 'update'])->name('events.update');
+    Route::delete('/dashboard/events/{id}', [AdminController::class, 'destroy'])->name('events.destroy');
+
     Route::post('/withdraw/{user}', [AdminController::class, 'processWithdraw'])
         ->middleware('admin')
         ->name('admin.withdraw');

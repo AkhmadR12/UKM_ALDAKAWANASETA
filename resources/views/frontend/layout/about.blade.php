@@ -14,11 +14,14 @@
             <p class="fst-italic">
               PEMBINA UKM ALDAKAWANASETA
             </p>
-            <ul>
+            <p>  
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc tortor mauris, porta sit amet lorem at, sollicitudin volutpat ligula. Morbi sodales sapien nibh, in laoreet dui faucibus id. In interdum eros eget mollis gravida. Fusce est nisi, egestas a rutrum viverra, interdum in metus. Curabitur commodo risus sed nisl interdum iaculis. Curabitur volutpat quam sed magna ullamcorper efficitur. In vitae fringilla magna. Donec elementum lacus vitae orci molestie, nec consectetur elit gravida. Vestibulum bibendum condimentum semper. Sed sit amet erat ut libero blandit dignissim. Aliquam nec eleifend elit. Nam nulla magna, scelerisque in pharetra porttitor, sagittis venenatis augue. Morbi in lorem tempus, tempus sapien eu, placerat turpis.
+            </p>
+            {{-- <ul>
               <li><i class="bi bi-check-circle-fill"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
               <li><i class="bi bi-check-circle-fill"></i> <span>Duis aute irure dolor in reprehenderit in voluptate velit.</span></li>
               <li><i class="bi bi-check-circle-fill"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate trideta storacalaperda mastiro dolore eu fugiat nulla pariatur.</span></li>
-            </ul>
+            </ul> --}}
             <p>
               Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
               velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident
