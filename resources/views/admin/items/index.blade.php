@@ -45,7 +45,7 @@
             <div class="container">
                 <div class="page-inner">
                     <div class="page-header">
-                        <h3 class="fw-bold mb-3">Categori Barang</h3>
+                        <h3 class="fw-bold mb-3">Item Barang</h3>
                         <ul class="breadcrumbs mb-3">
                             <li class="nav-home">
                                 <a href="#">
@@ -56,7 +56,7 @@
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="#">Tables</a>
+                                <a href="#">Tabel</a>
                             </li>
 
                         </ul>
@@ -90,11 +90,10 @@
                                                     <th>Nama</th>
                                                     <th>category_id</th>
                                                     <th>quantity</th>
-                                                    <th>daily_price</th>
-                                                    <th>image</th>
+                                                     <th>image</th>
                                                      
                                                     {{-- <th>Phone</th> --}}
-                                                    {{-- <th style="min-width: 220px;">Actions</th> --}}
+                                                    <th style="min-width: 220px;">Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -102,12 +101,35 @@
                                                 <tr>
                                                     <td>{{ $index + 1 }}</td>
                                                     <td>{{ $item->name }}</td>
-                                                    <td>{{ $item->category_id }}</td>
+                                                    <td>{{ $item->category ? $item->category->name : '-' }}</td>
+
                                                     <td>{{ $item->quantity }}</td>
-                                                    <td>{{ $item->daily_price }}</td>
-                                                    <td>
+                                                     <td>
                                                         <img src="{{ asset($item->image_path) }}" alt="Item Image" width="100">
-                                                    </td>                                                     
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex flex-wrap" style="gap: 5px;">
+                                                            <a href="{{ route('item.edit', $item->id) }}" 
+                                                            class="btn btn-sm btn-warning"
+                                                            title="Edit">
+                                                            <i class="fas fa-edit"></i>
+                                                            Edit
+                                                            </a>
+                                                            <form action="{{ route('item.destroy', $item->id) }}" 
+                                                                method="POST" 
+                                                                class="d-inline">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" 
+                                                                        class="btn btn-sm btn-danger"
+                                                                        title="Delete"
+                                                                        onclick="return confirm('Are you sure?')">
+                                                                    <i class="fas fa-trash"></i>
+                                                                    Hapus
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </td>                                                            
                                                 </tr>
                                                 @endforeach
                                             </tbody>

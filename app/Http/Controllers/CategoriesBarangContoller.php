@@ -30,4 +30,32 @@ class CategoriesBarangContoller extends Controller
     }
 
     // Method edit, update, destroy juga diimplementasikan
+    public function edit($id)
+    {
+        $categori_barang = CategoriBarang::findOrFail($id);
+        return view('admin.categori_barang.edit', compact('categori_barang'));
+    }
+    public function update(Request $request, $id)
+    {
+        $categori_barang = CategoriBarang::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            
+        ]);
+
+        $categori_barang->update([
+            'name' => $request->name,
+            'description' => $request->description,
+        ]);
+        return redirect()->route('categories_barang.index')->with('success', 'categori_barang berhasil diperbarui');
+    }
+    public function destroy($id)
+    {
+        $categori_barang = CategoriBarang::findOrFail($id);
+        $categori_barang->delete();
+
+        return redirect()->route('categories_barang.index')->with('success', 'Popup berhasil dihapus.');
+    }
 }

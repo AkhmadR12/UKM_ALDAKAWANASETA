@@ -84,7 +84,7 @@
                     </a>
                 </div>
             </div>
-            {{-- <div class="berita-info">
+            <div class="berita-info">
                 <h3 class="berita-title">
                     <a href="{{ route('detail.berita', $berita->id) }}">{{ $berita->judul }}</a>
                 </h3>
@@ -97,9 +97,9 @@
                 @endif            
                 
                 <a href="{{ route('detail.berita', $berita->id) }}" class="btn-read-more">
-                    <i class="fas fa-book-open"></i> Baca Selengkapnya
+                    <i class="fas fa-book-open"></i> Baca
                 </a>
-            </div> --}}
+            </div>
         </div>
         @endforeach
     </div>

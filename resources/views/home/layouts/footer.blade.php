@@ -29,7 +29,7 @@
                     <div class="footer-item">
                         <h3 class="text-white mb-4">
                             {{-- <i class="fas fa-hand-holding-water text-primary me-3"></i> --}}
-                            POTó
+                            ALDAKAWANASETA
                         </h3>
                         <p class="text-white mb-3">Dolor amet sit justo amet elitr clita ipsum elitr est.Lorem ipsum
                             dolor

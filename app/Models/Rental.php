@@ -15,8 +15,8 @@ class Rental extends Model
     const STATUS_COMPLETED = 'completed';
     const STATUS_REJECTED = 'rejected';
     protected $casts = [
-        'start_date' => 'datetime',
-        'end_date' => 'datetime',
+        'start_date' => 'date',
+        'end_date' => 'date',
     ];
     public function rentalItems()
     {

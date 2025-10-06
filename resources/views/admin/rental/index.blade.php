@@ -104,10 +104,19 @@
                                                     <td>{{ $index + 1 }}</td>
                                                     <td>{{ $rental->renter_name }}</td>
                                                     <td>{{ $rental->renter_phone }}</td>
-                                                    <td>{{ $rental->start_date }}</td>
-                                                    <td>{{ $rental->end_date }}</td>
-                                                    <td>{{ $rental->status }}</td>
-                                                    <td>{{ $rental->user->name }}</td>
+                                                    <td>{{ $rental->start_date->format('Y-m-d') }}</td>
+                                                    <td>{{ $rental->end_date->format('Y-m-d') }}</td>
+
+                                                    <td>
+                                                        <span class="badge 
+                                                            @if($rental->status == 'approved') badge-success 
+                                                            @elseif($rental->status == 'pending') badge-warning 
+                                                            @elseif($rental->status == 'completed') badge-primary
+                                                             @else badge-secondary @endif">
+                                                            {{ $rental->status }}
+                                                        </span>
+                                                    </td>
+                                                     <td>{{ $rental->user->name }}</td>
                                                      
                                                     <td>
                                                         <a href="{{ route('rentals.show', $rental->id) }}" class="btn btn-info btn-sm">Nota</a>

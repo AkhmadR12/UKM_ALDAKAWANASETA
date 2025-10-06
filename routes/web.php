@@ -237,6 +237,7 @@ Route::middleware(['auth', 'admin.or.memberopen'])->group(function () {
     Route::get('/rentals/{rental}/download', [RentalController::class, 'downloadPdf'])->name('rentals.download');
     Route::get('rentals/{rental}/check', [RentalCheckController::class, 'createCheck'])->name('rentals.check.create');
     Route::post('rentals/{rental}/check', [RentalCheckController::class, 'storeCheck'])->name('rentals.check.store');
+    Route::post('/form-input/import', [FormInputController::class, 'import'])->name('forminput.import');
 
     // Route untuk melihat hasil pengecekan (bukan show yang nota)
     Route::get('rentals/{rental}/inspection', [RentalCheckController::class, 'showInspection'])->name('rentals.inspection.show');
@@ -298,6 +299,7 @@ Route::middleware(['auth', 'admin.or.memberopen'])->group(function () {
     Route::resource('form_inputs', FormInputController::class);
     Route::post('/form-input/{id}/update-status', [FormInputController::class, 'updateStatus'])->name('form-input.update-status');
     Route::put('/form-input/{id}', [FormInputController::class, 'update'])->name('form-input.update');
+    Route::get('/form-inputs/export', [FormInputController::class, 'exportExcel'])->name('form-inputs.export');
 
     Route::resource('/tipe', TipeController::class);
 
@@ -323,9 +325,15 @@ Route::middleware(['auth', 'admin.or.memberopen'])->group(function () {
     Route::resource('product', ProductController::class);
     Route::get('produk/report', [ProductController::class, 'chart'])->name('product.report');
 
+    // Route resource untuk CRUD biasa
     Route::resource('popup', PopupController::class);
-    Route::post('/admin/popup/{id}/toggle', [PopupController::class, 'toggle'])->name('admin.popup.toggle');
 
+    // Route khusus untuk toggle status
+    Route::post('/popup/{id}/toggle', [PopupController::class, 'toggle'])->name('admin.popup.toggle');
+
+    // Route untuk mendapatkan popup aktif (jika diperlukan untuk frontend)
+    Route::get('/popup/active', [PopupController::class, 'getActivePopup'])->name('popup.active');
+    Route::put('/popup/{id}/status', [PopupController::class, 'updateStatus'])->name('admin.popup.status');
     Route::resource('service', ServiceController::class);
 
     Route::resource('event', EventController::class);

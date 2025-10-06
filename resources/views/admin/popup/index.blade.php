@@ -89,7 +89,7 @@
                                                     <th>No</th>
                                                     <th>Judul</th>
                                                     <th>Tipe</th>
-                                                    <th>file</th>
+                                                    <th>File</th>
                                                     <th>Status</th>
                                                     <th>Aksi</th>
                                                 </tr>
@@ -104,26 +104,31 @@
                                                             <img src="{{ asset($popup->file_path) }}" alt="file_path" width="100">
                                                         </td> 
                                                         <td>
-                                                            @if(!$popup->is_active)
-                                                                <form action="{{ route('admin.popup.toggle', $popup->id) }}" method="POST">
-                                                                    @csrf
-                                                                    <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">
-                                                                        Non aktif
-                                                                    </button>
-                                                                </form>
+                                                            @if($popup->is_active)
+                                                                <span class="badge badge-success">Aktif</span>
                                                             @else
-                                                                <form action="{{ route('admin.popup.toggle', $popup->id) }}" method="POST">
-                                                                    @csrf
-                                                                    <button type="submit" class="bg-green-500 text-black px-3 py-1 rounded hover:bg-green-600">
-                                                                        aktif
-                                                                    </button>
-                                                                </form>
+                                                                <span class="badge badge-danger">Non Aktif</span>
                                                             @endif
                                                         </td>
-
-
                                                         <td>
-                                                             <a href="{{ route('popup.edit', $popup->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                                            <!-- Tombol Toggle Status -->
+                                                            <form action="{{ route('admin.popup.toggle', $popup->id) }}" method="POST" class="d-inline">
+                                                                @csrf
+                                                                @if($popup->is_active)
+                                                                    <button type="submit" class="btn btn-warning btn-sm" onclick="return confirm('Nonaktifkan popup ini?')">
+                                                                        Nonaktifkan
+                                                                    </button>
+                                                                @else
+                                                                    <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('Aktifkan popup ini? Popup aktif lainnya akan dinonaktifkan.')">
+                                                                        Aktifkan
+                                                                    </button>
+                                                                @endif
+                                                            </form>
+
+                                                            <!-- Tombol Edit -->
+                                                            <a href="{{ route('popup.edit', $popup->id) }}" class="btn btn-primary btn-sm">Edit</a>
+                                                            
+                                                            <!-- Tombol Hapus -->
                                                             <form action="{{ route('popup.destroy', $popup->id) }}" method="POST" class="d-inline">
                                                                 @csrf
                                                                 @method('DELETE')

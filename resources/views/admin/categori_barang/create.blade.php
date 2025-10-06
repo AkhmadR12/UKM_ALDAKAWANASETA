@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>POTó</title>
+    <title>ALDAKAWANASETA</title>
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.css">
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -50,7 +50,7 @@
             <div class="container">
                 <div class="page-inner">
                     <div class="page-header">
-                        <h3 class="fw-bold mb-3">Categoti Barang</h3>
+                        <h3 class="fw-bold mb-3">Kategpri Barang</h3>
                         <ul class="breadcrumbs mb-3">
                             <li class="nav-home">
                                 <a href="#">
@@ -61,7 +61,7 @@
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="#">Tables</a>
+                                <a href="#">Tabel</a>
                             </li>
                             <li class="separator">
                                 <i class="icon-arrow-right"></i>
@@ -77,7 +77,7 @@
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>Tambah Berita</h5>
+                                    <h5>Tambah Kategori Barang</h5>
                                 </div>
                                 <div class="card-body">
                                     @if (session('success'))

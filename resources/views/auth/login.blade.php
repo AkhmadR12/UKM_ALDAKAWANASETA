@@ -84,15 +84,14 @@
             left: 10%;
         }
 
-        .camera-element.watermark {
+        /* .camera-element.watermark {
             background-image: url('logo/watermark.png');
-            /* background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50,10 L50,30 M50,70 L50,90 M10,50 L30,50 M70,50 L90,50 M20,20 L40,40 M60,60 L80,80 M20,80 L40,60 M60,40 L80,20" stroke="white" stroke-width="1.5" fill="none"/><circle cx="50" cy="50" r="15" fill="none" stroke="white" stroke-width="1"/></svg>'); */
-            width: 120px;
+           width: 120px;
             height: 120px;
             top: 15%;
             right: 15%;
             animation-duration: 10s;
-        }
+        } */
         .camera-element.aperture {
             /* background-image: url('logo/watermark.png'); */
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50,10 L50,30 M50,70 L50,90 M10,50 L30,50 M70,50 L90,50 M20,20 L40,40 M60,60 L80,80 M20,80 L40,60 M60,40 L80,20" stroke="white" stroke-width="1.5" fill="none"/><circle cx="50" cy="50" r="15" fill="none" stroke="white" stroke-width="1"/></svg>');

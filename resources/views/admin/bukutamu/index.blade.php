@@ -57,7 +57,7 @@
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="#">Tables</a>
+                                <a href="#">Tabel</a>
                             </li>
 
                         </ul>

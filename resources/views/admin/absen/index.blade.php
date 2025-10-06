@@ -44,7 +44,7 @@
             <div class="container">
                 <div class="page-inner">
                     <div class="page-header">
-                        <h3 class="fw-bold mb-3">Berkas</h3>
+                        <h3 class="fw-bold mb-3">Absen</h3>
                         <ul class="breadcrumbs mb-3">
                             <li class="nav-home">
                                 <a href="#">
@@ -55,7 +55,7 @@
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="#">Tables</a>
+                                <a href="#">Tabel</a>
                             </li>
 
                         </ul>
@@ -161,7 +161,7 @@
                                                     <th>Tanggal</th>
                                                     <th>Jam</th>
                                                     <th>Status</th>
-                                                     
+                                                    <th>Foto</th>
                                                     @if($user->role === 'admin')
                                                     <th>Aksi</th>
                                                     @endif
@@ -177,7 +177,11 @@
                                                     <td>{{ $attendance->tanggal }}</td>
                                                     <td>{{ $attendance->jam }}</td>
                                                     <td>{{ $attendance->status }}</td>
-                                                    
+                                                    <td>
+                                                        <img src="{{ asset('absen/' . $attendance->gambar) }}" alt="Foto Absen" width="100">
+
+                                                        {{-- <img src="{{ asset($attendance->gambar) }}" alt="Foto Absen" width="100"> --}}
+                                                    </td>  
                                                     @if($user->role === 'admin')
                                                     <td>
                                                         <form action="{{ route('absens.destroy', $attendance->id) }}" method="POST" 

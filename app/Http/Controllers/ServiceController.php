@@ -114,14 +114,14 @@ class ServiceController extends Controller
             'nama' => 'required|string|max:255',
             'deskripsi' => 'required',
             'icon' => 'nullable|string|max:255',
-            'images' => 'nullable|array|max:4', // Ubah dari 'image' ke 'images'
-            'images.*' => 'image|mimes:jpg,jpeg,png,gif|max:25048',
+            'images' => 'nullable|array',
+            'images.*' => 'image|mimes:jpg,jpeg,png,gif|max:125048',
             'remove_images' => 'nullable|array',
         ]);
 
-        $existingImages = $service->image ?? []; // Perbaiki dari 'images' ke 'image'
+        $existingImages = $service->image ?? [];
 
-        // 1. Hapus gambar yang dicentang
+        // 1. Hapus gambar lama
         if (!empty($data['remove_images'])) {
             foreach ($data['remove_images'] as $removeImage) {
                 if (($key = array_search($removeImage, $existingImages)) !== false) {
@@ -131,22 +131,21 @@ class ServiceController extends Controller
                     }
                 }
             }
-            $existingImages = array_values($existingImages); // Reset index
+            $existingImages = array_values($existingImages);
         }
 
-        // 2. Upload gambar baru
-        if ($request->hasFile('images')) { // Ubah dari 'image' ke 'images'
+        // 2. Upload baru
+        if ($request->hasFile('images')) {
             $uploadedImages = [];
-            foreach ($request->file('images') as $image) { // Ubah dari 'image' ke 'images'
+            foreach ($request->file('images') as $image) {
                 $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
                 $image->move(public_path('services'), $imageName);
                 $uploadedImages[] = 'services/' . $imageName;
             }
 
-            // Gabungkan yang lama + baru (max 4 total)
             $combinedImages = array_merge($existingImages, $uploadedImages);
+
             if (count($combinedImages) > 4) {
-                // Hapus gambar yang baru diupload jika melebihi batas
                 foreach ($uploadedImages as $uploadedImage) {
                     if (file_exists(public_path($uploadedImage))) {
                         unlink(public_path($uploadedImage));
@@ -157,7 +156,6 @@ class ServiceController extends Controller
 
             $data['image'] = $combinedImages;
         } else {
-            // Kalau tidak upload baru, simpan hasil penghapusan lama
             $data['image'] = $existingImages;
         }
 

@@ -160,7 +160,7 @@ class RentalController extends Controller
             'items.*.id' => 'required|exists:items,id',
             'items.*.quantity' => 'required|integer|min:1',
             'renter_photo' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            'document' => 'required|file|mimes:pdf,jpeg,png,jpg|max:2048',
+            'document' => 'required|file|mimes:jpeg,png,jpg|max:2048',
             'ttd_peminjam' => 'nullable|string',
         ]);
         $request['ttd_peminjam'] = $request->filled('ttd_peminjam') && $request->input('ttd_peminjam') !== ''

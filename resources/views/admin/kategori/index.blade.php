@@ -56,7 +56,7 @@
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="#">Tables</a>
+                                <a href="#">Tabel</a>
                             </li>
 
                         </ul>
@@ -67,7 +67,7 @@
                             <div class="card">
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
-                                        <h4 class="card-title">FAQ</h4>
+                                        <h4 class="card-title">Kategori</h4>
                                         <a href="{{ route('kategoris.create') }}" class="btn btn-primary btn-round ms-auto">
                                             <i class="fa fa-plus"></i>
                                             tambah
@@ -93,7 +93,7 @@
                                                     <th>tanggal</th>
                                                     <th>lokasi</th>
                                                     {{-- <th>Phone</th> --}}
-                                                    {{-- <th style="min-width: 220px;">Actions</th> --}}
+                                                    <th style="min-width: 220px;">Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -113,7 +113,29 @@
                                                     </td>                                                     
                                                     <td>{{ $kategori->tanggal }}</td>
                                                     <td>{{ $kategori->lokasi }}</td>
-                                                    
+                                                    <td>
+                                                        <a href="{{ route('kategoris.edit', $kategori->id) }}" 
+                                                           class="btn btn-sm btn-warning"
+                                                           title="Edit">
+                                                           <i class="fas fa-edit"></i>
+                                                           Edit
+                                                        </a>                                                          
+                                                             
+                                                                                                                        
+                                                        <form action="{{ route('kategoris.destroy', $kategori->id) }}" 
+                                                              method="POST" 
+                                                              class="d-inline">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" 
+                                                                    class="btn btn-sm btn-danger"
+                                                                    title="Delete"
+                                                                    onclick="return confirm('Are you sure?')">
+                                                                <i class="fas fa-trash"></i>
+                                                                Hapus
+                                                            </button>
+                                                        </form>
+                                                    </td>
                                                 </tr>
                                                 @endforeach
                                             </tbody>

@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>POTó</title>
+    <title>ALDAKAWANASETA</title>
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.css">
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -61,13 +61,13 @@
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="#">Tables</a>
+                                <a href="#">tabel</a>
                             </li>
                             <li class="separator">
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="#">Tambah</a>
+                                <a href="#">edit</a>
                             </li>
 
                         </ul>
@@ -77,7 +77,7 @@
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>Tambah FAQ</h5>
+                                    <h5>Edit Carousel</h5>
                                 </div>
                                 <div class="card-body">
                                     @if (session('success'))
@@ -95,12 +95,12 @@
                                             </ul>
                                         </div>
                                     @endif
-                                    <form action="{{ route('carousel.update', $carausel->id) }}" method="POST" enctype="multipart/form-data">
+                                    <form action="{{ route('carousel.update', $carousel->id) }}" method="POST" enctype="multipart/form-data">
                                         @csrf
 
                                         <div class="form-group">
                                             <label for="nama">Nama Carausel</label>
-                                            <input type="text" class="form-control" id="nama" name="nama" required value="{{ $carausel->nama }}">
+                                            <input type="text" class="form-control" id="nama" name="nama" required value="{{ $carousel->nama }}">
                                         </div>
 
                                         <div class="form-group">
@@ -118,9 +118,10 @@
             
 
                                         <div class="form-group">
-                                            <label for="description">Deskripsi</label>
-                                            <textarea class="form-control" id="description" name="description" rows="3" value="{{ $carausel->description }}"></textarea>
-                                        </div>
+                                            <label for="deskripsi">Deskripsi</label>
+                                            <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3">{{ $carousel->deskripsi }}</textarea>
+
+                                         </div>
                                          
                                         <a href="{{ route('carousel.index') }}" class="btn btn-danger">
                                             <i class="fa fa-backward"></i> Batal

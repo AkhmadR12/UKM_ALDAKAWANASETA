@@ -45,7 +45,7 @@
             <div class="container">
                 <div class="page-inner">
                     <div class="page-header">
-                        <h3 class="fw-bold mb-3">Berkas</h3>
+                        <h3 class="fw-bold mb-3">Carausel</h3>
                         <ul class="breadcrumbs mb-3">
                             <li class="nav-home">
                                 <a href="#">
@@ -56,7 +56,7 @@
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="#">Tables</a>
+                                <a href="#">Tabel</a>
                             </li>
 
                         </ul>
@@ -92,7 +92,7 @@
                                                     <th>Gambar</th>
                                                     
                                                     {{-- <th>Phone</th> --}}
-                                                    {{-- <th style="min-width: 220px;">Actions</th> --}}
+                                                    <th style="min-width: 220px;">Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -109,7 +109,30 @@
                                                     </td>
                                                     <td>
                                                         <img src="{{ asset($carousel->gambar) }}" alt="Member Image" width="100">
-                                                    </td>                                                     
+                                                    </td>      
+                                                    <td>
+                                                        <div class="d-flex flex-wrap" style="gap: 5px;">
+                                                            <a href="{{ route('carousel.edit', $carousel->id) }}" 
+                                                            class="btn btn-sm btn-warning"
+                                                            title="Edit">
+                                                            <i class="fas fa-edit"></i>
+                                                            Edit
+                                                            </a>
+                                                            <form action="{{ route('carousel.destroy', $carousel->id) }}" 
+                                                                method="POST" 
+                                                                class="d-inline">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" 
+                                                                        class="btn btn-sm btn-danger"
+                                                                        title="Delete"
+                                                                        onclick="return confirm('Are you sure?')">
+                                                                    <i class="fas fa-trash"></i>
+                                                                    Hapus
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </td>                                               
                                                     
                                                     
                                                 </tr>

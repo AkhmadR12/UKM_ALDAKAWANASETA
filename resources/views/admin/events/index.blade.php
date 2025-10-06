@@ -98,7 +98,7 @@
                                                 @foreach($events as $key => $event)
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
-                                                        <td>{{ $event->nama }}</td>
+                                                        <td>{{ $event->judul }}</td>
                                                         <td>{{ $event->deskripsi }}</td>
                                                         <td>
                                                             @if ($event->images->first())

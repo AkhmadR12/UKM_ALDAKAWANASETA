@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>POTó</title>
+    <title>ALDAKAWANASETA</title>
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.css">
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -96,7 +96,7 @@
                                         </div>
                                     @endif
                                     {{-- body form --}}
-                                    <form action="{{ route('admin.popup.update', $popup->id) }}" method="POST" enctype="multipart/form-data">
+                                    <form action="{{ route('popup.update', $popup->id) }}" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         @method('PUT')
 
@@ -118,12 +118,12 @@
                                             <input type="file" name="file" class="form-control" accept="image/*,video/mp4">
                                             @if ($popup->type === 'image')
                                                 <div class="mt-2">
-                                                    <img src="{{ asset('storage/' . $popup->file_path) }}" alt="Current Image" width="200">
+                                                    <img src="{{ asset( $popup->file_path) }}" alt="Current Image" width="200">
                                                 </div>
                                             @elseif ($popup->type === 'video')
                                                 <div class="mt-2">
                                                     <video width="320" height="240" controls>
-                                                        <source src="{{ asset('storage/' . $popup->file_path) }}" type="video/mp4">
+                                                        <source src="{{ asset( $popup->file_path) }}" type="video/mp4">
                                                         Browser Anda tidak mendukung pemutaran video.
                                                     </video>
                                                 </div>

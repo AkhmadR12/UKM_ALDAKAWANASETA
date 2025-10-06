@@ -142,6 +142,36 @@ class FormBuilder
                 'label' => 'Organisasi',
                 'required' => false
             ],
+            'nim' => [
+                'name' => 'nim',
+                'type' => 'text',
+                'label' => 'Nim',
+                'required' => false
+            ],
+            'semester' => [
+                'name' => 'semester',
+                'type' => 'text',
+                'label' => 'Semester',
+                'required' => false
+            ],
+            'program_studi' => [
+                'name' => 'program_studi',
+                'type' => 'text',
+                'label' => 'Program Studi',
+                'required' => false
+            ],
+            'fakultas' => [
+                'name' => 'fakultas',
+                'type' => 'text',
+                'label' => 'Fakultas',
+                'required' => false
+            ],
+            'alasan' => [
+                'name' => 'alasan',
+                'type' => 'text',
+                'label' => 'Alasan',
+                'required' => false
+            ],
             'jenis_anggota' => [
                 'name' => 'jenis_anggota',
                 'type' => 'radio',

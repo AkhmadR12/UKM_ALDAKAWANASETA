@@ -51,7 +51,20 @@ class PopupController extends Controller
 
         return back()->route('popup.index')->with('success', 'Popup uploaded successfully');
     }
+    public function updateStatus(Request $request, $id)
+    {
+        $popup = Popup::findOrFail($id);
 
+        // Jika akan diaktifkan, nonaktifkan yang lain
+        if (!$popup->is_active) {
+            Popup::where('is_active', true)->update(['is_active' => false]);
+        }
+
+        $popup->is_active = !$popup->is_active;
+        $popup->save();
+
+        return redirect()->back()->with('success', 'Status popup berhasil diperbarui.');
+    }
 
     public function edit($id)
     {
@@ -97,7 +110,7 @@ class PopupController extends Controller
             'is_active' => $request->is_active ?? false
         ]);
 
-        return redirect()->route('admin.popup.index')->with('success', 'Popup berhasil diperbarui.');
+        return redirect()->route('popup.index')->with('success', 'Popup berhasil diperbarui.');
     }
 
 

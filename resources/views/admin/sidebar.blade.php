@@ -148,12 +148,12 @@
                                         <p>Portofolio</p></span>
                                     </a>
                                 </li> --}}
-                                <li class="nav-item {{ request()->is('testimoni') ? 'active' : '' }}">
+                                {{-- <li class="nav-item {{ request()->is('testimoni') ? 'active' : '' }}">
                                     <a href="{{ url('testimoni') }}" class="collapsed" aria-expanded="false">
                                         <span class="sub-item"><i class="fas fa-briefcase"></i>
                                         <p>Testimoni</p></span>
                                     </a>
-                                </li>
+                                </li> --}}
                                 <li class="nav-item {{ request()->is('carousel') ? 'active' : '' }}">
                                     <a href="{{ url('carousel') }}" class="collapsed" aria-expanded="false">
                                         <span class="sub-item"><i class="fas fa-briefcase"></i>

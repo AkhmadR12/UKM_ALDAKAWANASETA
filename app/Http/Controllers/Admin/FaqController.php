@@ -80,6 +80,6 @@ class FaqController extends Controller
     {
         $faq->delete();
 
-        return redirect()->route('admin.faq.index')->with('success', 'FAQ berhasil dihapus.');
+        return redirect()->route('faq.index')->with('success', 'FAQ berhasil dihapus.');
     }
 }

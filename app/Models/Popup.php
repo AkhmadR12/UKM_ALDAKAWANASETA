@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Popup extends Model
 {
     use HasFactory;
-        protected $fillable = ['title', 'type', 'file_path', 'is_active'];
-
+    protected $fillable = ['title', 'type', 'file_path', 'is_active'];
+    protected $casts = [
+        'is_active' => 'boolean'
+    ];
 }

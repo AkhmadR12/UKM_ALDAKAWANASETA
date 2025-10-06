@@ -25,7 +25,6 @@ class ItemController extends Controller
             'category_id' => 'required|exists:categories_barang,id',
             'name' => 'required|max:100',
             'quantity' => 'required|integer|min:0',
-            'daily_price' => 'required|numeric|min:0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
@@ -47,5 +46,62 @@ class ItemController extends Controller
         ]);
 
         return redirect()->route('item.index')->with('success', 'Barang berhasil ditambahkan');
+    }
+    // EDIT METHOD
+    public function edit($id)
+    {
+        $item = Item::findOrFail($id);
+        $categories = CategoriBarang::all();
+        return view('admin.items.edit', compact('item', 'categories'));
+    }
+
+    // UPDATE METHOD
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'category_id' => 'required|exists:categories_barang,id',
+            'name' => 'required|max:100',
+            'quantity' => 'required|integer|min:0',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'description' => 'nullable',
+        ]);
+
+        $item = Item::findOrFail($id);
+        $data = $request->all();
+
+        // Handle image update
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($item->image_path && file_exists(public_path($item->image_path))) {
+                unlink(public_path($item->image_path));
+            }
+
+            // Save new image
+            $imageName = time() . '_' . $request->file('image')->getClientOriginalName();
+            $request->file('image')->move(public_path('item-images'), $imageName);
+            $data['image_path'] = 'item-images/' . $imageName;
+        } else {
+            // Keep the old image if no new image uploaded
+            unset($data['image_path']);
+        }
+
+        $item->update($data);
+
+        return redirect()->route('item.index')->with('success', 'Barang berhasil diperbarui');
+    }
+
+    // DESTROY METHOD
+    public function destroy($id)
+    {
+        $item = Item::findOrFail($id);
+
+        // Delete image if exists
+        if ($item->image_path && file_exists(public_path($item->image_path))) {
+            unlink(public_path($item->image_path));
+        }
+
+        $item->delete();
+
+        return redirect()->route('item.index')->with('success', 'Barang berhasil dihapus');
     }
 }

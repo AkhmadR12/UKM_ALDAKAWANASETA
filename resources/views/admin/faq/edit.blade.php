@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>POTó</title>
+    <title>ALDAKAWANASETA</title>
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.css">
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -67,7 +67,7 @@
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="#">Tambah</a>
+                                <a href="#">Edit</a>
                             </li>
 
                         </ul>
@@ -77,7 +77,7 @@
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>Tambah FAQ</h5>
+                                    <h5>Edit FAQ</h5>
                                 </div>
                                 <div class="card-body">
                                     @if (session('success'))
@@ -116,6 +116,9 @@
                                                 </option>
                                             </select>
                                         </div>
+                                        <a href="{{ route('faq.index') }}" class="btn btn-danger">
+                                            <i class="fa fa-backward"></i> Batal
+                                        </a>
                                         <button class="btn btn-primary">Update</button>
                                     </form>
 

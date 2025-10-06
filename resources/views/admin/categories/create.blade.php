@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>POTó</title>
+    <title>ALDAKAWANASETA</title>
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.css">
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -73,13 +73,13 @@
                         </ul>
                     </div>
                     <div class="container">
-                        <h1>Create New Member</h1>
+                        <h1>Tambah Kategori</h1>
                         
                        <form action="{{ route('categories.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
 
                             <div class="form-group">
-                                <label for="name">Category Name</label>
+                                <label for="name">Kategori Name</label>
                                 <input type="text" name="name" id="name" class="form-control" required>
                                 @error('name')
                                     <div class="alert alert-danger">{{ $message }}</div>

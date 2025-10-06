@@ -6,23 +6,122 @@ use App\Models\FormInput;
 use App\Models\Kategori;
 use App\Services\FormBuilder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use App\Exports\FormInputsExport;
+use App\Imports\FormInputImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class FormInputController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $forms = FormInput::all();
-        // $kategoris = Kategori::all(); // ambil semua kategori untuk dropdown
-        $kategoris = Kategori::where('status', 'aktif')->get();
+    // public function index()
+    // {
+    //     $forms = FormInput::all();
+    //     // $kategoris = Kategori::all(); // ambil semua kategori untuk dropdown
+    //     $kategoris = Kategori::where('status', 'aktif')->get();
 
-        return view('admin.form.index', compact('forms', 'kategoris'));
+    //     return view('admin.form.index', compact('forms', 'kategoris'));
+    // }
+    public function index(Request $request)
+    {
+        // Simpan filter di session untuk export
+        if ($request->hasAny(['category', 'status', 'search'])) {
+            session([
+                'form_filters' => [
+                    'category' => $request->category,
+                    'status' => $request->status,
+                    'search' => $request->search
+                ]
+            ]);
+        }
+
+        $query = FormInput::with('kategori');
+
+        if (Auth::user()->role === 'member') {
+            $query->where('user_id', Auth::id());
+        }
+
+        // Apply filters jika ada
+        if ($request->filled('category')) {
+            $query->where('kategori_id', $request->category);
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('nama', 'like', "%{$search}%")
+                    ->orWhere('organisasi', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('nomor_telp', 'like', "%{$search}%");
+            });
+        }
+
+        $forms = $query->paginate(10);
+        $kategoris = Kategori::all();
+
+        $showStatusModal = false;
+        $modalData = null;
+
+        if (Auth::user()->role === 'member' && $forms->total() > 0) {
+
+            foreach ($forms as $form) {
+                $kategori = $kategoris->where('id', $form->kategori_id)->first();
+
+                if ($kategori && $kategori->status === 'aktif') {
+                    if ($form->status === 'BATAL') {
+                        $modalData = [
+                            'status' => 'BATAL',
+                            'kategori_name' => $kategori->nama_kategori
+                        ];
+                        break;
+                    } else if ($form->status === 'INPG' && !$modalData) {
+                        $modalData = [
+                            'status' => 'INPG',
+                            'kategori_name' => $kategori->nama_kategori
+                        ];
+                    }
+                }
+            }
+
+            $showStatusModal = !is_null($modalData);
+        }
+
+        return view('admin.form.index', compact('forms', 'kategoris', 'showStatusModal', 'modalData'));
+    }
+    public function exportExcel(Request $request)
+    {
+        // Ambil filter dari session atau request
+        $filters = session('form_filters', []);
+
+        // Jika ada filter langsung dari request (untuk export dengan filter spesifik)
+        if ($request->hasAny(['category', 'status', 'search'])) {
+            $filters = $request->only(['category', 'status', 'search']);
+        }
+
+        $filename = 'form_inputs_' . date('Y-m-d_H-i-s') . '.xlsx';
+
+        return Excel::download(new FormInputsExport($filters), $filename);
     }
 
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv',
+        ]);
+
+        Excel::import(new FormInputImport, $request->file('file'));
+
+        return redirect()->back()->with('success', 'Data berhasil diimport!');
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -48,6 +147,11 @@ class FormInputController extends Controller
             'kategori_id' => 'required|exists:kategoris,id',
             'nama' => 'nullable|string|max:255',
             'organisasi' => 'nullable|string|max:255',
+            'nim' => 'nullable',
+            'semester' => 'nullable',
+            'program_studi' => 'nullable',
+            'fakultas' => 'nullable',
+            'alasan' => 'nullable',
             'jabatan' => 'nullable|string|max:255',
             'jenis_anggota' => 'nullable|string|max:255',
             'nomor_anggota' => 'nullable|string|max:100',
@@ -394,6 +498,36 @@ class FormInputController extends Controller
                 'label' => 'Organisasi',
                 'required' => false
             ],
+            'nim' => [
+                'name' => 'nim',
+                'type' => 'text',
+                'label' => 'Nim',
+                'required' => false
+            ],
+            'semester' => [
+                'name' => 'semester',
+                'type' => 'text',
+                'label' => 'Semester',
+                'required' => false
+            ],
+            'program_studi' => [
+                'name' => 'program_studi',
+                'type' => 'text',
+                'label' => 'Program Studi',
+                'required' => false
+            ],
+            'fakultas' => [
+                'name' => 'fakultas',
+                'type' => 'text',
+                'label' => 'Fakultas',
+                'required' => false
+            ],
+            'alasan' => [
+                'name' => 'alasan',
+                'type' => 'text',
+                'label' => 'Alasan',
+                'required' => false
+            ],
             'jenis_anggota' => [
                 'name' => 'jenis_anggota',
                 'type' => 'radio',
@@ -716,6 +850,11 @@ class FormInputController extends Controller
         $allFields = [
             'nama' => ['type' => 'text', 'label' => 'Nama Lengkap', 'required' => true],
             'email' => ['type' => 'email', 'label' => 'Email', 'required' => true],
+            'nim' => ['type' => 'nim', 'label' => 'nim', 'required' => true],
+            'semester' => ['type' => 'semester', 'label' => 'semester', 'required' => true],
+            'program_studi' => ['type' => 'program_studi', 'label' => 'program_studi', 'required' => true],
+            'fakultas' => ['type' => 'fakultas', 'label' => 'fakultas', 'required' => true],
+            'alasan' => ['type' => 'alasan', 'label' => 'alasan', 'required' => true],
             'jenis_kelamin' => [
                 'type' => 'radio',
                 'label' => 'Jenis Kelamin',

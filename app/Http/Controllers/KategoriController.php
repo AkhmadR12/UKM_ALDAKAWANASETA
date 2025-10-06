@@ -72,6 +72,11 @@ class KategoriController extends Controller
         $allFields = [
             'nama',
             'organisasi',
+            'nim',
+            'semester',
+            'program_studi',
+            'fakultas',
+            'alasan',
             'jabatan',
             'jenis_anggota',
             'nomor_anggota',
@@ -93,7 +98,7 @@ class KategoriController extends Controller
             'portofolio'
         ];
 
-        return view('kategoris.edit', compact('kategori', 'allFields'));
+        return view('admin.kategori.edit', compact('kategori', 'allFields'));
     }
 
     public function update(Request $request, $id)
@@ -115,18 +120,7 @@ class KategoriController extends Controller
         $data = $request->all();
         $data['active_fields'] = $request->active_fields ?: [];
 
-        // Update gambar jika ada
-        // if ($request->hasFile('gambar')) {
-        //     // Hapus gambar lama jika ada
-        //     if ($kategori->gambar && file_exists(public_path($kategori->gambar))) {
-        //         unlink(public_path($kategori->gambar));
-        //     }
 
-        //     $imageName = time() . '.' . $request->gambar->extension();
-        //     $request->gambar->move(public_path('images/kategori'), $imageName);
-        //     $data['gambar'] = 'images/kategori/' . $imageName;
-        // }
-        // Handle hapus gambar
         if ($request->has('hapus_gambar') && $kategori->gambar) {
             if (file_exists(public_path($kategori->gambar))) {
                 unlink(public_path($kategori->gambar));

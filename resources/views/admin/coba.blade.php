@@ -1005,7 +1005,7 @@
                     <div id="alertContainer"></div>
 
                     <div class="card">
-                        <header class="calendar-header">
+                        <header class="calendar-header mt-2">
                             <div class="header-controls">
                                 <button class="btn btn-icon" id="prevMonth">
                                     <i class="fas fa-chevron-left"></i>
@@ -1028,13 +1028,13 @@
                             <!-- Month View -->
                             <div class="calendar-view month-view active" id="monthView">
                                 <div class="calendar-weekdays">
-                                    <div class="weekday">Sun</div>
-                                    <div class="weekday">Mon</div>
-                                    <div class="weekday">Tue</div>
-                                    <div class="weekday">Wed</div>
-                                    <div class="weekday">Thu</div>
-                                    <div class="weekday">Fri</div>
-                                    <div class="weekday">Sat</div>
+                                    <div class="weekday">Minggu</div>
+                                    <div class="weekday">Senin</div>
+                                    <div class="weekday">Selasa</div>
+                                    <div class="weekday">Rabu</div>
+                                    <div class="weekday">Kamis</div>
+                                    <div class="weekday">Jumat</div>
+                                    <div class="weekday">Sabtu</div>
                                 </div>
                                 <div class="calendar-grid" id="monthGrid">
                                     <!-- Days will be populated by JavaScript -->
@@ -1045,13 +1045,13 @@
                             <div class="calendar-view week-view" id="weekView">
                                 <div class="week-header">
                                     <div class="time-column">Time</div>
-                                    <div class="day-column" data-day="0">Sun</div>
-                                    <div class="day-column" data-day="1">Mon</div>
-                                    <div class="day-column" data-day="2">Tue</div>
-                                    <div class="day-column" data-day="3">Wed</div>
-                                    <div class="day-column" data-day="4">Thu</div>
-                                    <div class="day-column" data-day="5">Fri</div>
-                                    <div class="day-column" data-day="6">Sat</div>
+                                    <div class="day-column" data-day="0">Minggu</div>
+                                    <div class="day-column" data-day="1">Senin</div>
+                                    <div class="day-column" data-day="2">Selasa</div>
+                                    <div class="day-column" data-day="3">Rabu</div>
+                                    <div class="day-column" data-day="4">Kamis</div>
+                                    <div class="day-column" data-day="5">Jumat</div>
+                                    <div class="day-column" data-day="6">Sabtu</div>
                                 </div>
                                 <div class="week-grid" id="weekGrid">
                                     <!-- Time slots will be populated by JavaScript -->
@@ -1070,7 +1070,7 @@
                     <!-- Event Panel -->
                     <div class="event-panel" id="eventPanel">
                         <div class="panel-header">
-                            <h3>Events</h3>
+                            <h3>Time line</h3>
                             <button class="btn btn-primary" id="addEventBtn">
                                 <i class="fas fa-plus"></i> Add Event
                             </button>

@@ -167,9 +167,9 @@
     <span>Event</span>
   </a>
   
-  <a href="{{ url('/majalah') }}" class="nav-icon {{ request()->is('Majalah') ? 'active' : '' }}">
+  <a href="{{ url('//buku-tamu') }}" class="nav-icon {{ request()->is('Majalah') ? 'active' : '' }}">
     <i class="fas fa-book"></i>
-    <span>Majalah</span>
+    <span>Buku tamu</span>
   </a>
   
   <!-- Tombol Logo Tengah -->

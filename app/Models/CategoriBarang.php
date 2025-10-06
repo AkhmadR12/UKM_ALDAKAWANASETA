@@ -11,10 +11,7 @@ class CategoriBarang extends Model
     protected $table = 'categories_barang';
     protected $fillable = ['name', 'description'];
 
-    // public function items()
-    // {
-    //     return $this->hasMany(Item::class);
-    // }
+   
     public function items()
     {
         return $this->hasMany(Item::class, 'category_id'); // foreign key sesuai tabel items

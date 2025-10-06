@@ -46,39 +46,26 @@ class AttendanceController extends Controller
     {
         $user = Auth::user();
         $today = Carbon::now()->toDateString();
-        $now = Carbon::now(); // Tambahkan ini untuk dikirim ke view
-
-        // Cek apakah sudah absen hari ini
+        $now = Carbon::now(); 
         $todayAttendance = Attendance::where('user_id', $user->id)
             ->where('tanggal', $today)
             ->first();
-
-        // Query dasar untuk absensi
         $query = Attendance::with('user');
-
-        // Jika bukan admin, filter hanya data user sendiri
         if ($user->role !== 'admin') {
             $query->where('user_id', $user->id);
         }
-
-        // Filter berdasarkan tanggal jika ada
         if ($request->has('start_date') && $request->start_date != '') {
             $query->where('tanggal', '>=', $request->start_date);
         } else {
-            // Default: 1 bulan terakhir
             $query->where('tanggal', '>=', Carbon::now()->subMonth()->toDateString());
         }
 
         if ($request->has('end_date') && $request->end_date != '') {
             $query->where('tanggal', '<=', $request->end_date);
         }
-
-        // Urutkan dan paginate
         $attendances = $query->orderBy('tanggal', 'desc')
             ->orderBy('jam', 'desc')
             ->paginate(10);
-
-        // Tambahkan parameter filter ke pagination links
         if ($request->has('start_date')) {
             $attendances->appends(['start_date' => $request->start_date]);
         }

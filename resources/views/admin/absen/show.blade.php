@@ -44,7 +44,7 @@
             <div class="container">
                 <div class="page-inner">
                     <div class="page-header">
-                        <h3 class="fw-bold mb-3">Berkas</h3>
+                        <h3 class="fw-bold mb-3">Absen</h3>
                         <ul class="breadcrumbs mb-3">
                             <li class="nav-home">
                                 <a href="#">
@@ -55,7 +55,7 @@
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="#">Tables</a>
+                                <a href="#">Tabel</a>
                             </li>
 
                         </ul>
@@ -94,7 +94,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <p><strong>Foto:</strong></p>
-                                                <img src="{{ asset('absen/' . $attendance->gambar) }}" alt="Foto Absen" class="img-fluid">
+                                                <img src="{{ asset( $attendance->gambar) }}" alt="Foto Absen" class="img-fluid">
                                             </div>
                                         </div>
                                          

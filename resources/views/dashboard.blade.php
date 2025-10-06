@@ -21,7 +21,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>POTó Loader Animation</title>
+    <title>ALDAKAWANASETA Loader Animation</title>
     <style>
         body {
             margin: 0;
@@ -294,7 +294,7 @@
 
     <!-- Main Content (yang akan muncul setelah animasi loader selesai) -->
     <div class="main-content" id="mainContent">
-        <h1>Selamat Datang di Website POTó</h1>
+        <h1>Selamat Datang di Website ALDAKAWANASETA</h1>
         <!-- Konten website Anda akan di sini -->
     </div>
 

@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>POTó</title>
+    <title>ALDAKAWANASETA</title>
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.css">
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -98,7 +98,7 @@
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="#">Tambah</a>
+                                <a href="#">Edit</a>
                             </li>
 
                         </ul>
@@ -108,7 +108,7 @@
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>Tambah Berita</h5>
+                                    <h5>Edit Kategori</h5>
                                 </div>
                                 <div class="card-body">
                                     @if (session('success'))
@@ -179,8 +179,8 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="description">Deskripsi</label>
-                                            <textarea class="form-control" id="description" name="description" rows="3">{{ old('description', $kategori->description) }}</textarea>
+                                            <label for="deskripsi">Deskripsi</label>
+                                            <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3">{{ old('deskripsi', $kategori->deskripsi) }}</textarea>
                                         </div>
 
                                         <!-- Field untuk memilih active fields -->

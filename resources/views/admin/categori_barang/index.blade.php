@@ -45,7 +45,7 @@
             <div class="container">
                 <div class="page-inner">
                     <div class="page-header">
-                        <h3 class="fw-bold mb-3">Categori Barang</h3>
+                        <h3 class="fw-bold mb-3">Kategori Barang</h3>
                         <ul class="breadcrumbs mb-3">
                             <li class="nav-home">
                                 <a href="#">
@@ -56,7 +56,7 @@
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="#">Tables</a>
+                                <a href="#">Tabel</a>
                             </li>
 
                         </ul>
@@ -67,7 +67,7 @@
                             <div class="card">
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
-                                        <h4 class="card-title">Categori Barang</h4>
+                                        <h4 class="card-title">Kategori Barang</h4>
                                         <a href="{{ route('categories_barang.create') }}" class="btn btn-primary btn-round ms-auto">
                                             <i class="fa fa-plus"></i>
                                             tambah
@@ -88,10 +88,9 @@
                                                 <tr>
                                                     <th>Nomor</th>
                                                     <th>Nama</th>
-                                                    <th>description</th>
-                                                     
+                                                    <th>Deskripsi</th>
                                                     {{-- <th>Phone</th> --}}
-                                                    {{-- <th style="min-width: 220px;">Actions</th> --}}
+                                                    <th style="min-width: 220px;">Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -101,7 +100,29 @@
                                                     <td>{{ $categori_barang->name }}</td>
                                                                                                       
                                                     <td>{{ $categori_barang->description }}</td>
-                                                     
+                                                     <td>
+                                                        <div class="d-flex flex-wrap" style="gap: 5px;">
+                                                            <a href="{{ route('categories_barang.edit', $categori_barang->id) }}" 
+                                                            class="btn btn-sm btn-warning"
+                                                            title="Edit">
+                                                            <i class="fas fa-edit"></i>
+                                                            Edit
+                                                            </a>
+                                                            <form action="{{ route('categories_barang.destroy', $categori_barang->id) }}" 
+                                                                method="POST" 
+                                                                class="d-inline">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" 
+                                                                        class="btn btn-sm btn-danger"
+                                                                        title="Delete"
+                                                                        onclick="return confirm('Are you sure?')">
+                                                                    <i class="fas fa-trash"></i>
+                                                                    Hapus
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </td>
                                                     
                                                 </tr>
                                                 @endforeach

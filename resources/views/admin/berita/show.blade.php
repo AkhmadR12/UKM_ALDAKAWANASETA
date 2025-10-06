@@ -44,7 +44,7 @@
             <div class="container">
                 <div class="page-inner">
                     <div class="page-header">
-                        <h3 class="fw-bold mb-3">Berkas</h3>
+                        <h3 class="fw-bold mb-3">Berita</h3>
                         <ul class="breadcrumbs mb-3">
                             <li class="nav-home">
                                 <a href="#">
@@ -55,7 +55,7 @@
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="#">Tables</a>
+                                <a href="#">Tabel</a>
                             </li>
 
                         </ul>
@@ -64,16 +64,15 @@
 
                         <div class="col-md-12">
                             <div class="card">
-                                <div class="card-header">
+                                {{-- <div class="card-header">
                                     <div class="d-flex align-items-center">
                                         <h4 class="card-title">Carausel</h4>
                                         <a href="{{ route('berita.create') }}" class="btn btn-primary btn-round ms-auto">
                                             <i class="fa fa-plus"></i>
                                             tambah
                                         </a>
-                                        {{-- @endif --}}
-                                    </div>
-                                </div>                
+                                     </div>
+                                </div>                 --}}
                                 @if(session('success'))
                                     <div class="alert alert-success">
                                         {{ session('success') }}

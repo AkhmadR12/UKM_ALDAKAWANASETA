@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>POTó</title>
+    <title>ALDAKAWANASETA</title>
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.css">
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -61,7 +61,7 @@
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="#">Tables</a>
+                                <a href="#">Tabel</a>
                             </li>
                             <li class="separator">
                                 <i class="icon-arrow-right"></i>
@@ -112,6 +112,9 @@
                                                 <option value="0">Nonaktif</option>
                                             </select>
                                         </div>
+                                        <a href="{{ route('faq.index') }}" class="btn btn-danger">
+                                            <i class="fa fa-backward"></i> Batal
+                                        </a>
                                         <button class="btn btn-success">Simpan</button>
                                     </form>
 

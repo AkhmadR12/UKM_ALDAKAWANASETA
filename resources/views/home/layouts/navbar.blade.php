@@ -2,7 +2,7 @@
         <a href="" class="navbar-brand p-0">
             <h1 class="text-dark" id="logo-text">
                 {{-- <i class="fas fa-hand-holding-water me-3"></i> --}}
-                POTó
+                ALDAKAWANASETA
                 <div class="taglinea">Flowing with Purpose</div>
 
             </h1>

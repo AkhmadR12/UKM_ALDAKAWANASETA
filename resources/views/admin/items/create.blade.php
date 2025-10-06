@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>POTó</title>
+    <title>ALDAKAWANASETA</title>
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.css">
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -10,7 +10,7 @@
     <script type="text/javascript" src="http://keith-wood.name/js/jquery.signature.js"></script>
     <link rel="stylesheet" type="text/css" href="http://keith-wood.name/css/jquery.signature.css">
     @include('admin.css')
-    <link href="{{ asset('home/assets/img/favicon.png') }}" rel="icon">
+    {{-- <link href="{{ asset('home/assets/img/favicon.png') }}" rel="icon"> --}}
 
 </head>
 
@@ -50,7 +50,7 @@
             <div class="container">
                 <div class="page-inner">
                     <div class="page-header">
-                        <h3 class="fw-bold mb-3">Categoti Barang</h3>
+                        <h3 class="fw-bold mb-3">Item Barang</h3>
                         <ul class="breadcrumbs mb-3">
                             <li class="nav-home">
                                 <a href="#">
@@ -61,7 +61,7 @@
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="#">Tables</a>
+                                <a href="#">Tabel</a>
                             </li>
                             <li class="separator">
                                 <i class="icon-arrow-right"></i>
@@ -101,29 +101,41 @@
                                         <div class="form-group">
                                             <label>Kategori*</label>
                                             <select name="category_id" class="form-control" required>
+                                                <option value="">Pilih Kategori</option>
                                                 @foreach($categories as $category)
                                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
+                                        
                                         <div class="form-group">
                                             <label>Nama Barang*</label>
                                             <input type="text" name="name" class="form-control" required>
                                         </div>
+                                        
                                         <div class="form-group">
                                             <label>Jumlah Stok*</label>
                                             <input type="number" name="quantity" class="form-control" required>
                                         </div>
+                                        
                                         <div class="form-group">
-                                            <label>Harga Sewa Harian*</label>
-                                            <input type="number" name="daily_price" class="form-control" required>
+                                            <label>Status</label>
+                                            <select name="status" class="form-control">
+                                                <option value="active">Aktif</option>
+                                                <option value="inactive">Nonaktif</option>
+                                            </select>
                                         </div>
+                                        
+                                        <div class="form-group">
+                                            <label>Deskripsi</label>
+                                            <textarea name="description" class="form-control" rows="3"></textarea>
+                                        </div>
+                                        
                                         <div class="form-group">
                                             <label>Gambar Barang</label>
                                             <input type="file" name="image" class="form-control-file">
                                         </div>
 
-                                         
                                         <a href="{{ route('item.index') }}" class="btn btn-danger">
                                             <i class="fa fa-backward"></i> Batal
                                         </a>

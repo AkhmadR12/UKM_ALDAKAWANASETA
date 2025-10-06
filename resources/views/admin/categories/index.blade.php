@@ -45,7 +45,7 @@
             <div class="container">
                 <div class="page-inner">
                     <div class="page-header">
-                        <h3 class="fw-bold mb-3">Berkas</h3>
+                        <h3 class="fw-bold mb-3">Kategori</h3>
                         <ul class="breadcrumbs mb-3">
                             <li class="nav-home">
                                 <a href="#">
@@ -56,7 +56,7 @@
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="#">Tables</a>
+                                <a href="#">Tabel</a>
                             </li>
 
                         </ul>
@@ -67,7 +67,7 @@
                             <div class="card">
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
-                                        <h4 class="card-title">FAQ</h4>
+                                        <h4 class="card-title">Kategori</h4>
                                         <a href="{{ route('categories.create') }}" class="btn btn-primary btn-round ms-auto">
                                             <i class="fa fa-plus"></i>
                                             tambah
